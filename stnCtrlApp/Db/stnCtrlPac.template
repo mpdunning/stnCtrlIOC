@@ -1,0 +1,334 @@
+record(stringout, "$(P):IOC") {
+  field(DESC, "")
+  field(VAL,  "$(IOC)")
+  field(PINI, "1")
+}
+#-- PAC phase/amp -----------------------
+record(ao, "$(P):PHS:DES") {
+  field(DESC, "Desired phase")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(FLNK, "$(P):AS:PAC:SET")
+  field(PINI, "1")
+}
+record(ao, "$(P):PHS:LOLIM") {
+  field(DESC, "Phase low lim")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-360")
+  field(HOPR, "360")
+  field(DRVL, "-360")
+  field(DRVH, "360")
+  field(FLNK, "$(P):PHS:LOLIM:DFO")
+  field(PINI, "1")
+}
+record(dfanout, "$(P):PHS:LOLIM:DFO") {
+  field(DESC, "Data fanout")
+  field(DOL,  "$(P):PHS:LOLIM")
+  field(OMSL, "closed_loop")
+  field(OUTA, "$(P):PHS:DES.LOPR")
+  field(OUTB, "$(P):PHS:DES.DRVL")
+  field(PINI, "1")
+}
+record(ao, "$(P):PHS:HILIM") {
+  field(DESC, "Phase hi lim")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-360")
+  field(HOPR, "360")
+  field(DRVL, "-360")
+  field(DRVH, "360")
+  field(FLNK, "$(P):PHS:HILIM:DFO")
+  field(PINI, "1")
+}
+record(dfanout, "$(P):PHS:HILIM:DFO") {
+  field(DESC, "Data fanout")
+  field(DOL,  "$(P):PHS:HILIM")
+  field(OMSL, "closed_loop")
+  field(OUTA, "$(P):PHS:DES.HOPR")
+  field(OUTB, "$(P):PHS:DES.DRVH")
+  field(PINI, "1")
+}
+record(ai, "$(P):PHS:PAC:RBV") {
+  field(DESC, "PAC phase readback")
+  field(EGU,  "Deg")
+  field(PREC, "1")
+}
+record(ao, "$(P):AMP:DES") {
+  field(DESC, "Desired amplitude")
+  field(PREC, "1")
+  field(EGU,  "%")
+  field(FLNK, "$(P):AS:PAC:SET")
+  field(PINI, "1")
+}
+record(ao, "$(P):AMP:LOLIM") {
+  field(DESC, "Amplitude low lim")
+  field(PREC, "1")
+  field(EGU,  "%")
+  field(LOPR, "0")
+  field(HOPR, "100")
+  field(DRVL, "0")
+  field(DRVH, "100")
+  field(FLNK, "$(P):AMP:LOLIM:DFO")
+  field(PINI, "1")
+}
+record(dfanout, "$(P):AMP:LOLIM:DFO") {
+  field(DESC, "Data fanout")
+  field(DOL,  "$(P):AMP:LOLIM")
+  field(OMSL, "closed_loop")
+  field(OUTA, "$(P):AMP:DES.LOPR")
+  field(OUTB, "$(P):AMP:DES.DRVL")
+  field(PINI, "1")
+}
+record(ao, "$(P):AMP:HILIM") {
+  field(DESC, "Amplitude hi lim")
+  field(PREC, "1")
+  field(EGU,  "%")
+  field(LOPR, "0")
+  field(HOPR, "100")
+  field(DRVL, "0")
+  field(DRVH, "100")
+  field(FLNK, "$(P):AMP:HILIM:DFO")
+  field(PINI, "1")
+}
+record(dfanout, "$(P):AMP:HILIM:DFO") {
+  field(DESC, "Data fanout")
+  field(DOL,  "$(P):AMP:HILIM")
+  field(OMSL, "closed_loop")
+  field(OUTA, "$(P):AMP:DES.HOPR")
+  field(OUTB, "$(P):AMP:DES.DRVH")
+  field(PINI, "1")
+}
+record(ai, "$(P):AMP:PAC:RBV") {
+  field(DESC, "PAC amplitude readback")
+  field(EGU,  "%")
+  field(PREC, "1")
+}
+record( aSub, "$(P):AS:PAC:SET"){
+  field( DESC, "Set PAC I & Q from desired phase/amp")
+  field( SNAM, "asPacSet")
+  field( INPA, "$(P):PHS:DES")
+  field( FTA,  "DOUBLE")  field( NOA,  "1")
+  field( INPB, "$(P):AMP:DES")
+  field( FTB,  "DOUBLE")  field( NOB,  "1")
+  field( INPC, "$(STN):180:L1X_I_ADJUST.HOPR")
+  field( FTC,  "DOUBLE")  field( NOC,  "1")
+  field( INPD, "$(STN):180:L1X_Q_ADJUST.HOPR")
+  field( FTD,  "DOUBLE")  field( NOD,  "1")
+  field( FTVA, "LONG")  field( NOVA, "1")
+  field( FTVB, "LONG")  field( NOVB, "1")
+  field( OUTA, "$(STN):180:L1X_I_ADJUST CPP")
+  field( OUTB, "$(STN):180:L1X_Q_ADJUST CPP")
+  field( FLNK, "$(P):AS:PAC:RBV")
+}
+record( aSub, "$(P):AS:PAC:RBV"){
+  field( DESC, "Calculate PAC phase/amp from I/Q")
+  field( SNAM, "asPacRBV")
+  field( INPA, "$(STN):180:L1X_I_MONT CPP")
+  field( FTA,  "DOUBLE")  field( NOA,  "1")
+  field( INPB, "$(STN):180:L1X_Q_MONT CPP")
+  field( FTB,  "DOUBLE")  field( NOB,  "1")
+  field( INPC, "$(P):PHS:DES")
+  field( FTC,  "DOUBLE")  field( NOC,  "1")
+  field( FTVA, "DOUBLE")  field( NOVA, "1")
+  field( FTVB, "DOUBLE")  field( NOVB, "1")
+  field( FTVC, "DOUBLE")  field( NOVC, "1")
+  field( OUTA, "$(P):PHS:PAC:RBV PP")
+  field( OUTB, "$(P):AMP:PAC:RBV PP")
+  field( OUTC, "$(P):PHS:PAC:RAD:RBV PP")
+}
+record( ai, "$(P):PHS:PAC:RAD:RBV") {
+  field( EGU,  "Rad")
+  field( PREC, "3")
+}
+#-- PAC pulse mode/width/delay -----------------------
+record( mbbo, "$(P):PULSEMODE"){
+  field( DESC, "PAC pulse mode")
+  field( ZRST, "Klystron")
+  field( ONST, "SLED")
+  field( TWST, "Cal")
+  field( ZRVL, "0")
+  field( ONVL, "1")
+  field( TWVL, "2")
+  field( TWSV, "MAJOR")
+  field( VAL,  "0")
+  field( PINI, "1")
+  field( FLNK, "$(P):AS:PAC:PSEL.PROC")
+}
+record( longout, "$(P):PULSEWIDTH:DES"){
+  field( DESC, "")
+  field( EGU,  "Ticks")
+  field( LOPR, "0")
+  field( HOPR, "350")
+  field( VAL,  "18")
+  field( PINI, "1")
+  field( FLNK, "$(P):AS:PAC:PSEL.PROC")
+}
+record( longout, "$(P):PULSEDELAY:DES"){
+  field( DESC, "")
+  field( EGU,  "Ticks")
+  field( LOPR, "1")
+  field( HOPR, "310")
+  field( VAL,  "1")
+  field( PINI, "1")
+  field( FLNK, "$(P):AS:PAC:PSEL.PROC")
+}
+record( longout, "$(P):SLEDBINSEP:DES"){
+  field( DESC, "")
+  field( EGU,  "Ticks")
+  field( LOPR, "1")
+  field( HOPR, "35")
+  field( VAL,  "30")
+  field( PINI, "1")
+  field( FLNK, "$(P):AS:PAC:PSEL.PROC")
+}
+record(ao, "$(P):PHSBIN1:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "10")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record(ao, "$(P):PHSBIN2:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "90")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record(ao, "$(P):PHSBIN3:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "110")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record(ao, "$(P):PHSBIN4:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "110")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record(ao, "$(P):PHSBIN5:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "110")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record(ao, "$(P):PHSBIN6:DES") {
+  field(DESC, "")
+  field(PREC, "1")
+  field(EGU,  "Deg")
+  field(LOPR, "-179.5")
+  field(HOPR, "179.5")
+  field(DRVL, "-179.5")
+  field(DRVH, "179.5")
+  field(VAL,  "-80")
+  field(PINI, "1")
+  field(FLNK, "$(P):AS:PAC:PSEL")
+}
+record( aSub, "$(P):AS:PAC:PSEL"){
+  field( DESC, "")
+  field( SNAM, "asPacPulse")
+  field( INPA, "$(P):PULSEMODE")
+  field( FTA,  "SHORT")  field( NOA,  "1")
+  field( INPB, "$(P):PULSEWIDTH:DES")
+  field( FTB,  "SHORT")  field( NOB,  "1")
+  field( INPC, "$(P):PULSEDELAY:DES")
+  field( FTC,  "SHORT")  field( NOC,  "1")
+  field( INPD, "$(P):SLEDBINSEP:DES")
+  field( FTD,  "SHORT")  field( NOD,  "1")
+  field( INPE, "$(P):PHSBIN1:DES")
+  field( FTE,  "DOUBLE")  field( NOE,  "1")
+  field( INPF, "$(P):PHSBIN2:DES")
+  field( FTF,  "DOUBLE")  field( NOF,  "1")
+  field( INPG, "$(P):PHSBIN3:DES")
+  field( FTG,  "DOUBLE")  field( NOG,  "1")
+  field( INPH, "$(P):PHSBIN4:DES")
+  field( FTH,  "DOUBLE")  field( NOH,  "1")
+  field( INPI, "$(P):PHSBIN5:DES")
+  field( FTI,  "DOUBLE")  field( NOI,  "1")
+  field( INPJ, "$(P):PHSBIN6:DES")
+  field( FTJ,  "DOUBLE")  field( NOJ,  "1")
+  field( FTVA, "DOUBLE")  field( NOVA, "2048")
+  field( FTVB, "DOUBLE")  field( NOVB, "2048")
+  field( FTVC, "DOUBLE")  field( NOVC, "1")
+  field( FTVD, "DOUBLE")  field( NOVD, "1")
+  field( FTVE, "DOUBLE")  field( NOVE, "1")
+  field( OUTA, "$(STN):180:L1X_I_REF CPP")
+  field( OUTB, "$(STN):180:L1X_Q_REF CPP")
+  field( OUTC, "$(P):PULSEWIDTH:ACT PP")
+  field( OUTD, "$(P):PULSEDELAY:ACT PP")
+  field( OUTE, "$(P):SLEDBINSEP:ACT PP")
+  field( FLNK, "$(STN):180:L1X_FAN_WF.PROC")
+}
+record( ai, "$(P):PULSEWIDTH:ACT"){
+  field( DESC, "")
+  field( EGU,  "ns")
+  field( PREC, "2")
+}
+record( ai, "$(P):PULSEDELAY:ACT"){
+  field( DESC, "")
+  field( EGU,  "ns")
+  field( PREC, "2")
+}
+record( ai, "$(P):SLEDBINSEP:ACT"){
+  field( DESC, "")
+  field( EGU,  "ns")
+  field( PREC, "2")
+}
+record( aSub, "$(P):AS:PAC:PAWF"){
+  field( DESC, "")
+  field( SNAM, "asPacPhsAmpWf")
+  field( INPA, "$(STN):180:L1X_I_REF CPP")
+  field( FTA,  "DOUBLE")  field( NOA,  "2048")
+  field( INPB, "$(STN):180:L1X_Q_REF CPP")
+  field( FTB,  "DOUBLE")  field( NOB,  "2048")
+  field( FTVA, "DOUBLE")  field( NOVA, "2048")
+  field( FTVB, "DOUBLE")  field( NOVB, "2048")
+  field( PINI, "1")
+  field( FLNK, "$(P):WF:PHS.PROC")
+}
+record( waveform, "$(P):WF:PHS"){
+  field( DESC, "")
+  field( EGU,  "")
+  field( INP,  "$(P):AS:PAC:PAWF.VALA")
+  field( NELM, "2048")
+  field( FTVL, "DOUBLE")
+  field( FLNK, "$(P):WF:AMP.PROC")
+}
+record( waveform, "$(P):WF:AMP"){
+  field( DESC, "")
+  field( EGU,  "")
+  field( INP,  "$(P):AS:PAC:PAWF.VALB")
+  field( NELM, "2048")
+  field( FTVL, "DOUBLE")
+}
+

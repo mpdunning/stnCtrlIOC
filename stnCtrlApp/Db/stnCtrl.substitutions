@@ -1,0 +1,21 @@
+file stnCtrlPac.template {
+pattern 
+{None}
+{None}
+}
+
+file stnCtrlPad.template {
+pattern 
+{CH}
+{ 0}
+{ 1}
+{ 2}
+{ 3}
+}
+
+file stnCtrlSR.template {
+pattern
+{TYPE, ITEM, PREC}
+{ PHS,  DES,    1}
+{ AMP,  DES,    1}
+}

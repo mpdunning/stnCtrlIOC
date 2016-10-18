@@ -1,0 +1,17 @@
+# RELEASE - Location of external support modules
+#
+
+include $(TOP)/../../../RELEASE_SITE
+
+TEMPLATE_TOP=$(EPICS_BASE)/templates/makeBaseApp/top
+
+EPICS_MODULES=$(EPICS_SITE_TOP)/modules
+
+AUTOSAVE=$(EPICS_MODULES)/autosave/R5.5
+
+EPICS_BASE=$(EPICS_SITE_TOP)/base
+
+# Set RULES here if you want to take build rules from somewhere
+# other than EPICS_BASE:
+#RULES=/path/to/epics/support/module/rules/x-y
+

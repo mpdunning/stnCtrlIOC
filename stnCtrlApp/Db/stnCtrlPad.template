@@ -1,0 +1,122 @@
+#-- PAD phase/amp Ch.$(CH) ---------------------------------------------
+record( sub, "$(P):AS:PAD:CH$(CH)"){
+  field( DESC, "Calculate PAD phase/amp from I & Q")
+  field( SNAM, "asPad")
+  field( INPA, "$(STN):$(KLY):$(PAD)_$(CH)_S_AVG0 CPP")
+  field( INPB, "$(STN):$(KLY):$(PAD)_$(CH)_S_AVG1")
+  field( FLNK, "$(P):AMP:ACT:CH$(CH).PROC")
+}
+record( ai, "$(P):AMP:ACT:CH$(CH)") {
+  field( DESC, "Actual PAD Ch.$(CH) amp")
+  field( EGU,  "%")
+  field( INP,  "$(P):AS:PAD:CH$(CH).C")
+  field( PREC, "2")
+  field( FLNK, "$(P):PHS:ACT:RAD:CH$(CH).PROC")
+}
+record( ai, "$(P):PHS:ACT:RAD:CH$(CH)") {
+  field( DESC, "Actual PAD Ch.$(CH) phase")
+  field( EGU,  "Rad")
+  field( INP,  "$(P):AS:PAD:CH$(CH).D")
+  field( PREC, "4")
+  field( FLNK, "$(P):PHS:ACT:CH$(CH).PROC")
+}
+record( ao, "$(P):PHS:OFFSET:CH$(CH)") {
+  field( DESC, "Ch.$(CH) phase offset in deg")
+  field( EGU,  "Deg")
+  field( PREC, "4")
+  field( FLNK, "$(P):PHS:ACT:CH$(CH).PROC")
+}
+record( calc, "$(P):PHS:ACT:CH$(CH)"){
+  field( DESC, "Actual PAD Ch.$(CH) phase in deg")
+  field( EGU,  "Deg")
+  field( INPA, "$(P):PHS:ACT:RAD:CH$(CH)")
+  field( INPB, "$(P):PHS:OFFSET:CH$(CH)")
+  field( CALC, "A*(180/3.14159)+B")
+  field( PREC, "2")
+  field( FLNK, "$(P):AMP:ACT:COMP:CH$(CH).PROC")
+}
+#-- PAD stats Ch.$(CH) ---------------------------------------------
+record( compress, "$(P):AMP:ACT:COMP:CH$(CH)"){
+  field( DESC, "Last 10 samples")
+  field( NSAM, "10")
+  field( ALG,  "Circular Buffer")
+  field( INP,  "$(P):AMP:ACT:CH$(CH)")
+  field( PREC, "2")
+  field( FLNK, "$(P):PHS:ACT:COMP:CH$(CH).PROC")
+}
+record( compress, "$(P):PHS:ACT:COMP:CH$(CH)"){
+  field( DESC, "Last 10 samples")
+  field( NSAM, "10")
+  field( ALG,  "Circular Buffer")
+  field( INP,  "$(P):PHS:ACT:CH$(CH)")
+  field( PREC, "2")
+  field( FLNK, "$(P):AS:PAD:STATS:CH$(CH).PROC")
+}
+record( aSub, "$(P):AS:PAD:STATS:CH$(CH)"){
+  field( DESC, "PAD Stats")
+  field( SNAM, "asPadStats")
+  field( INPA, "$(P):AMP:ACT:COMP:CH$(CH)")
+  field( FTA,  "DOUBLE")  field( NOA,  "10")
+  field( INPB, "$(P):PHS:ACT:COMP:CH$(CH)")
+  field( FTB,  "DOUBLE")  field( NOB,  "10")
+  field( FTVA, "DOUBLE")  field( NOVA, "1")
+  field( FTVB, "DOUBLE")  field( NOVB, "1")
+  field( FTVC, "DOUBLE")  field( NOVC, "1")
+  field( FTVD, "DOUBLE")  field( NOVD, "1")
+  field( OUTA, "$(P):AMP:ACT:AVE10:CH$(CH) PP")
+  field( OUTB, "$(P):AMP:ACT:STD10:CH$(CH) PP")
+  field( OUTC, "$(P):PHS:ACT:AVE10:CH$(CH) PP")
+  field( OUTD, "$(P):PHS:ACT:STD10:CH$(CH) PP")
+}
+record( ai, "$(P):AMP:ACT:AVE10:CH$(CH)") {
+  field( DESC, "10 shot ave")
+  field( EGU,  "")
+  field( PREC, "2")
+}
+record( ai, "$(P):AMP:ACT:STD10:CH$(CH)") {
+  field( DESC, "10 shot stdev")
+  field( EGU,  "")
+  field( PREC, "2")
+}
+record( ai, "$(P):PHS:ACT:AVE10:CH$(CH)") {
+  field( DESC, "10 shot ave")
+  field( EGU,  "")
+  field( PREC, "2")
+}
+record( ai, "$(P):PHS:ACT:STD10:CH$(CH)") {
+  field( DESC, "10 shot stdev")
+  field( EGU,  "")
+  field( PREC, "2")
+}
+record( aSub, "$(P):AS:PAD:WF:CH$(CH)"){
+  field( DESC, "")
+  field( SNAM, "asPadWf")
+#  field( INPA, "$(STN):$(KLY):$(PAD)_$(CH)_S_R_WF CPP")
+  field( INPA, "$(STN):$(KLY):$(PAD)_$(CH)_RAW_WF CPP")
+  field( FTA,  "DOUBLE")  field( NOA,  "512")
+  field( FTVA, "DOUBLE")  field( NOVA, "1")
+  field( FTVB, "DOUBLE")  field( NOVB, "1")
+  field( FTVC, "DOUBLE")  field( NOVC, "1")
+  field( OUTA, "$(P):AVE:CH$(CH) PP")
+  field( OUTB, "$(P):RMS:CH$(CH) PP")
+  field( OUTC, "$(P):STD:CH$(CH) PP")
+}
+record( ai, "$(P):AVE:CH$(CH)") {
+  field( DESC, "Ch$(CH) Ave")
+  field( EGU,  "Counts")
+  field( PREC, "2")
+}
+record( ai, "$(P):RMS:CH$(CH)") {
+  field( DESC, "Ch$(CH) RMS")
+  field( EGU,  "Counts")
+  field( PREC, "2")
+}
+record( ai, "$(P):STD:CH$(CH)") {
+  field( DESC, "Ch$(CH) Std Dev")
+  field( EGU,  "Counts")
+  field( PREC, "2")
+}
+record(stringout, "$(P):CAL:MSG") {
+  field( DESC, "Calibration message string")
+}
+

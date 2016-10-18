@@ -1,0 +1,65 @@
+record( ai,"$(P):$(TYPE):$(ITEM):SAVED1"){
+  field( DESC, "saved value")
+  field( PREC, "$(PREC)")
+  field( INP,  "$(P):$(TYPE):$(ITEM)")
+}
+record( calcout,"$(P):$(TYPE):$(ITEM):RESTORE1"){
+  field( DESC, "restore value")
+  field( PREC, "$(PREC)")
+  field( INPA, "$(P):$(TYPE):$(ITEM):SAVED1.VAL")
+  field( CALC, "A")
+  field( OUT,  "$(P):$(TYPE):$(ITEM).VAL")
+  field( FLNK, "$(P):$(TYPE):$(ITEM).PROC")
+}
+record( ai,"$(P):$(TYPE):$(ITEM):SAVED2"){
+  field( DESC, "saved value")
+  field( PREC, "$(PREC)")
+  field( INP,  "$(P):$(TYPE):$(ITEM)")
+}
+record( calcout,"$(P):$(TYPE):$(ITEM):RESTORE2"){
+  field( DESC, "restore value")
+  field( PREC, "$(PREC)")
+  field( INPA, "$(P):$(TYPE):$(ITEM):SAVED2.VAL")
+  field( CALC, "A")
+  field( OUT,  "$(P):$(TYPE):$(ITEM).VAL")
+  field( FLNK, "$(P):$(TYPE):$(ITEM).PROC")
+}
+record( ai,"$(P):$(TYPE):$(ITEM):SAVED3"){
+  field( DESC, "saved value")
+  field( PREC, "$(PREC)")
+  field( INP,  "$(P):$(TYPE):$(ITEM)")
+}
+record( calcout,"$(P):$(TYPE):$(ITEM):RESTORE3"){
+  field( DESC, "restore value")
+  field( PREC, "$(PREC)")
+  field( INPA, "$(P):$(TYPE):$(ITEM):SAVED3.VAL")
+  field( CALC, "A")
+  field( OUT,  "$(P):$(TYPE):$(ITEM).VAL")
+  field( FLNK, "$(P):$(TYPE):$(ITEM).PROC")
+}
+record( ai,"$(P):$(TYPE):$(ITEM):SAVED4"){
+  field( DESC, "saved value")
+  field( PREC, "$(PREC)")
+  field( INP,  "$(P):$(TYPE):$(ITEM)")
+}
+record( calcout,"$(P):$(TYPE):$(ITEM):RESTORE4"){
+  field( DESC, "restore value")
+  field( PREC, "$(PREC)")
+  field( INPA, "$(P):$(TYPE):$(ITEM):SAVED4.VAL")
+  field( CALC, "A")
+  field( OUT,  "$(P):$(TYPE):$(ITEM).VAL")
+  field( FLNK, "$(P):$(TYPE):$(ITEM).PROC")
+}
+record( ai,"$(P):$(TYPE):$(ITEM):SAVED5"){
+  field( DESC, "saved value")
+  field( PREC, "$(PREC)")
+  field( INP,  "$(P):$(TYPE):$(ITEM)")
+}
+record( calcout,"$(P):$(TYPE):$(ITEM):RESTORE5"){
+  field( DESC, "restore value")
+  field( PREC, "$(PREC)")
+  field( INPA, "$(P):$(TYPE):$(ITEM):SAVED5.VAL")
+  field( CALC, "A")
+  field( OUT,  "$(P):$(TYPE):$(ITEM).VAL")
+  field( FLNK, "$(P):$(TYPE):$(ITEM).PROC")
+}
